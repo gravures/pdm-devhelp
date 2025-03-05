@@ -1,0 +1,51 @@
+[project]
+name = "pdm-devhelp"
+version = "0.0.0"
+requires-python = ">=3.9"
+dependencies = ["pdm"]
+classifiers = ["Private :: Do Not Upload"]
+
+[tool.uv]
+package = false
+
+[tool.uv.workspace]
+members = ["src/plugins/pdm-bump-scm", "src/plugins/pdm-build-monorepo"]
+
+[tool.uv.sources]
+pdm-bump-scm = { workspace = true }
+pdm-build-monorepo = { workspace = true }
+
+[tool.pdm]
+distribution = false
+plugins = ["pdm-bump-scm @ file:///${PROJECT_ROOT}/src/plugins/pdm-bump-scm"]
+
+[tool.pdm.scripts]
+sync-all = "uv sync --all-groups --no-install-project --active --locked --all-packages"
+changelog = "uv run --active --locked --all-packages git-cliff --output CHANGELOG.md"
+build-all = "uv build --all-packages --no-python-downloads"
+publish-all = "uv publish -v --no-python-downloads ./dist/*"
+test = "pytest -s -v -k {args}"
+test-all = "coverage run -m pytest"
+test-types = "pdm run basedpyright --stats ./src/**"
+test-cover = "coverage report"
+test-tox = "tox --develop -r -e py"
+pc-init = { composite = ["pre-commit install --install-hooks", "pc-update"] }
+pc-update = "pre-commit autoupdate"
+pc-check = { env = { "SKIP" = "basedpyright" }, cmd = "pre-commit run --all-files" }
+pc-clean = "pre-commit clean && pre-commit gc"
+list-group = "pdm list --fields name,groups,version,licenses,homepage --sort groups,name,licenses --exclude :sub"
+checkup = { composite = [
+  "pdm show",
+  "list-group",
+  "tokei",
+  "pc-check",
+  "test-types",
+  "dead",
+  "test-cover",
+], keep_going = true }
+
+[dependency-groups]
+dev = ["pdm-backend"]
+build = ["git-cliff>=2.8.0"]
+test = ["pytest", "coverage[toml]", "tox>=4.0", "tox-pdm>=0.7.2"]
+static = ["ruff>=0.5", "basedpyright>=1.15", "pre-commit>=3.7.0", "dead>=1.5.2"]
