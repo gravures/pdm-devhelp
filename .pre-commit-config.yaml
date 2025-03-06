@@ -77,7 +77,11 @@ repos:
         args: ["--ignore=PLR0912,RUF100,T20,D,TD,FIX,DOC"]
       - id: ruff-format
   # PDM
-  - repo: https://github.com/pdm-project/pdm
-    rev: 2.22.3
+  # - repo: https://github.com/pdm-project/pdm
+  #   rev: 2.22.3
+  #   hooks:
+  #     - id: pdm-lock-check
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.6.4
     hooks:
-      - id: pdm-lock-check
+      - id: uv-lock

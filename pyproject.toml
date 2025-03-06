@@ -1,8 +1,12 @@
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
 [project]
 name = "pdm-devhelp"
-version = "0.0.0"
 requires-python = ">=3.9"
-dependencies = ["pdm"]
+dependencies = ["pdm>=2.22"]
+dynamic = ["version"]
 classifiers = ["Private :: Do Not Upload"]
 
 [tool.uv]
@@ -17,13 +21,18 @@ pdm-build-monorepo = { workspace = true }
 
 [tool.pdm]
 distribution = false
-plugins = ["pdm-bump-scm @ file:///${PROJECT_ROOT}/src/plugins/pdm-bump-scm"]
+
+[tool.pdm.version]
+source = "scm"
+tag_regex = '^v(?:\D*)?(?P<version>([1-9][0-9]*!)?(0|[1-9][0-9]*)(\.(0|[1-9][0-9]*))*((a|b|c|rc)(0|[1-9][0-9]*))?(\.post(0|[1-9][0-9]*))?(\.dev(0|[1-9][0-9]*))?$)$'
+fallback_version = "0.0.0"
 
 [tool.pdm.scripts]
-sync-all = "uv sync --all-groups --no-install-project --active --locked --all-packages"
-changelog = "uv run --active --locked --all-packages git-cliff --output CHANGELOG.md"
-build-all = "uv build --all-packages --no-python-downloads"
-publish-all = "uv publish -v --no-python-downloads ./dist/*"
+workspace-lock = "uv lock --no-python-downloads"
+workspace-sync = "uv sync --locked --all-packages --no-python-downloads {args}"
+workspace-build = "uv build --all-packages --no-python-downloads"
+workspace-publish = "uv publish -v --no-python-downloads ./dist/*"
+workspace-install = { composite = ["workspace-lock", "workspace-sync"] }
 test = "pytest -s -v -k {args}"
 test-all = "coverage run -m pytest"
 test-types = "pdm run basedpyright --stats ./src/**"
@@ -45,7 +54,6 @@ checkup = { composite = [
 ], keep_going = true }
 
 [dependency-groups]
-dev = ["pdm-backend"]
-build = ["git-cliff>=2.8.0"]
-test = ["pytest", "coverage[toml]", "tox>=4.0", "tox-pdm>=0.7.2"]
-static = ["ruff>=0.5", "basedpyright>=1.15", "pre-commit>=3.7.0", "dead>=1.5.2"]
+dev = ["pdm-backend>=2.4.3"]
+test = ["pytest>=8.3", "coverage[toml]>=7.6", "tox>=4.24", "tox-pdm>=0.7.2"]
+static = ["ruff>=0.9", "basedpyright>=1.28", "pre-commit>=4.1", "dead>=2.1"]
