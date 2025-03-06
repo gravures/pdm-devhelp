@@ -1,0 +1,23 @@
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[project]
+name = "pdm-bump-scm"
+description = ""
+authors = [{ name = "Gilles Coissac", email = "gilles@ideographe.fr" }]
+license = { text = "GPL-3.0" }
+readme = "README.md"
+dependencies = ["pdm-bump"]
+dynamic = ["version"]
+
+[project.entry-points.pdm]
+bump = "bump_command:main"
+
+[tool.pdm.build]
+source-includes = ["CHANGELOG.md"]
+
+[tool.pdm.version]
+source = "scm"
+tag_regex = '^pdm-bump-scm-v(?:\D*)?(?P<version>([1-9][0-9]*!)?(0|[1-9][0-9]*)(\.(0|[1-9][0-9]*))*((a|b|c|rc)(0|[1-9][0-9]*))?(\.post(0|[1-9][0-9]*))?(\.dev(0|[1-9][0-9]*))?$)$'
+fallback_version = "0.0.0"
