@@ -1,3 +1,4 @@
+# Cocogitto config
 from_latest_tag = true
 ignore_merge_commits = true
 disable_changelog = false
@@ -21,12 +22,15 @@ pdm-bump-scm = { path = "src/plugins/pdm-bump-scm" }
 pdm-build-monorepo = { path = "src/plugins/pdm-build-monorepo" }
 
 [commit_types]
-# feat, fix, build, ci, revert, docs, test, style, chore, perf
-hotfix = { changelog_title = "Hotfixes" }
-security = { changelog_title = "Security" }
+# feat*, fix*, hotfix*, security*, build, ci, revert, docs, test, style, chore, perf*
+hotfix = { changelog_title = "Hotfixes", bump_minor = true }
+security = { changelog_title = "Security", bump_minor = true }
+perf = { changelog_title = "Performance", bump_minor = true }
 # Omit commits from changelog
 chore = { changelog_title = "", omit_from_changelog = true }
 ci = { changelog_title = "", omit_from_changelog = true }
+style = { changelog_title = "", omit_from_changelog = true }
+test = { changelog_title = "", omit_from_changelog = true }
 
 [changelog]
 path = "CHANGELOG.md"
@@ -34,6 +38,7 @@ authors = [{ username = "gravures", signature = "Gilles Coissac" }]
 remote = "github.com"
 repository = "pdm-devhelp"
 owner = "gravures"
+template = "changelog.tera"
 
 [bump_profiles]
 [git_hooks]
