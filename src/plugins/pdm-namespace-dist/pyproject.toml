@@ -4,12 +4,31 @@ build-backend = "pdm.backend"
 
 [project]
 name = "pdm-namespace-dist"
-description = ""
+description = "A pdm plugin to build sub-packages or modules as standalone distributions."
 authors = [{ name = "Gilles Coissac", email = "gilles@ideographe.fr" }]
 license = { text = "GPL-3.0" }
 readme = "README.md"
 dependencies = []
 dynamic = ["version"]
+keywords = ["pdm", "plugin", "build", "namespace", "monorepo"]
+classifiers = [
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3 :: Only",
+  "Typing :: Typed",
+]
+
+urls.homepage = "https://github.com/gravures/pdm-devhelp/src/plugins/pdm-namespace-dist"
+urls.repository = "https://github.com/gravures/pdm-devhelp/src/plugins/pdm-namespace-dist"
+urls.documentation = "https://github.com/gravures/pdm-devhelp/"
+urls.issue = "https://github.com/gravures/pdm-devhelp/issues"
 
 [project.entry-points."pdm.build.hook"]
 namespace_dist = "namespace_dist"
