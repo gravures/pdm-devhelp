@@ -161,7 +161,7 @@ def update_config_for_namespace_package(context: Context, package: str) -> None:
         raise TypeError(msg)
     package_metadata = cast("dict[str, object]", package_metadata)
 
-    using_override = bool(namespace.get("override", False))
+    use_override = bool(namespace.get("override", False))
     config = context.config
     build_config = context.config.build_config
 
@@ -169,11 +169,13 @@ def update_config_for_namespace_package(context: Context, package: str) -> None:
     build_config.update(package_config)
     logger.warning("NAMESPACE build config")
     logger.warning(json.dumps(dict(build_config), indent=2))
+
+    # safe-guard property
     build_config["namespace_build"] = True
 
     # Override or merge metadata
-    if using_override:
-        config.data["project"] = package_metadata
+    if use_override:
+        config.data["project"] |= package_metadata
     else:
         deep_merge(target=context.config.metadata, source=package_metadata)
         # dependencies are already merged, restore them
