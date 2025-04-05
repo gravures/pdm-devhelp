@@ -13,11 +13,10 @@ classifiers = ["Private :: Do Not Upload"]
 package = false
 
 [tool.uv.workspace]
-members = ["src/plugins/pdm-bump-scm", "src/plugins/pdm-build-monorepo"]
+members = ["src/plugins/pdm-namespace-dist"]
 
 [tool.uv.sources]
-pdm-bump-scm = { workspace = true }
-pdm-build-monorepo = { workspace = true }
+pdm-namespace-dist = { workspace = true }
 
 [tool.pdm]
 distribution = false
