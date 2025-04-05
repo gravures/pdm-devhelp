@@ -22,8 +22,7 @@ pdm-bump-scm = { path = "src/plugins/pdm-bump-scm" }
 pdm-build-monorepo = { path = "src/plugins/pdm-build-monorepo" }
 
 [commit_types]
-# feat*, fix*, hotfix*, security*, build, ci, revert, docs, test, style, chore, perf*
-hotfix = { changelog_title = "Hotfixes", bump_minor = true }
+# feat*, fix*,  security*, build, ci, revert, docs, test, style, chore, perf*
 security = { changelog_title = "Security", bump_minor = true }
 perf = { changelog_title = "Performance", bump_minor = true }
 # Omit commits from changelog
